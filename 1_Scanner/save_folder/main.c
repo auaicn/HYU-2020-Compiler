@@ -8,9 +8,7 @@
 #include "globals.h"
 
 /* set NO_PARSE to TRUE to get a scanner-only compiler */
-// #define NO_PARSE FALSE
-#define NO_PARSE (TRUE)
-
+#define NO_PARSE FALSE
 /* set NO_ANALYZE to TRUE to get a parser-only compiler */
 #define NO_ANALYZE FALSE
 
@@ -39,13 +37,8 @@ FILE * listing;
 FILE * code;
 
 /* allocate and set tracing flags */
-
-// int EchoSource = FALSE;
-// int TraceScan = FALSE;
-
-int EchoSource = TRUE;
-int TraceScan = TRUE;
-
+int EchoSource = FALSE;
+int TraceScan = FALSE;
 int TraceParse = FALSE;
 int TraceAnalyze = FALSE;
 int TraceCode = FALSE;
@@ -55,33 +48,21 @@ int Error = FALSE;
 main( int argc, char * argv[] )
 { TreeNode * syntaxTree;
   char pgm[120]; /* source code file name */
-
-  // detect incorrect commandline execution
   if (argc != 2)
     { fprintf(stderr,"usage: %s <filename>\n",argv[0]);
       exit(1);
     }
-
-  // input stream
   strcpy(pgm,argv[1]) ;
   if (strchr (pgm, '.') == NULL)
      strcat(pgm,".tny");
-
-  // read for read-only mode
   source = fopen(pgm,"r");
   if (source==NULL)
-  { 
-    // open error
-    fprintf(stderr,"File %s not found\n",pgm);
+  { fprintf(stderr,"File %s not found\n",pgm);
     exit(1);
   }
-
-  // it we need file, we may use indirection. > 
   listing = stdout; /* send listing to screen */
   fprintf(listing,"\nC-MINUS COMPILATION: %s\n",pgm);
-
 #if NO_PARSE
-  // no PARSE then just get token until we reach to the end of file.
   while (getToken()!=ENDFILE);
 #else
   syntaxTree = parse();
