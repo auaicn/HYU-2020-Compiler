@@ -1,17 +1,24 @@
-#
-# Makefile for TINY
-# Gnu C Version
-# K. Louden 2/3/98
-#
+# NOTE: ./lex/tiny.l --> cminus.l
 
 CC = gcc
-
 CFLAGS = 
 
 OBJS = main.o util.o scan.o parse.o symtab.o analyze.o code.o cgen.o
+OBJS_FLEX = main.o util.o lex.yy.o parse.o symtab.o analyze.o code.o cgen.o
 
-tiny: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o tiny
+.PHONY: all scanner_cimpl scanner_flex $(OBJS) $(OBJS_FLEX) lex.yy.c
+
+all: scanner_cimpl scanner_flex
+
+scanner_cimpl: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@
+
+scanner_flex: $(OBJS_FLEX)
+	$(CC) $(CFLAGS) $(OBJS_FLEX) -o $@ -lfl
+
+lex.yy.o: cminus.l
+	flex $^
+	$(CC) $(CFLAGS) -c lex.yy.c -lfl
 
 main.o: main.c globals.h util.h scan.h parse.h analyze.h cgen.h
 	$(CC) $(CFLAGS) -c main.c
@@ -38,12 +45,4 @@ cgen.o: cgen.c globals.h symtab.h code.h cgen.h
 	$(CC) $(CFLAGS) -c cgen.c
 
 clean:
-	-rm tiny
-	-rm tm
-	-rm $(OBJS)
-
-tm: tm.c
-	$(CC) $(CFLAGS) tm.c -o tm
-
-all: tiny tm
-
+	rm -vf scanner_cimpl scanner_flex *.o lex.yy.c

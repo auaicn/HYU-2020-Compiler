@@ -23,33 +23,51 @@ whitespace  [ \t]+
 %%
 
 "if"            {return IF;}
-"then"          {return THEN;}
 "else"          {return ELSE;}
-"end"           {return END;}
-"repeat"        {return REPEAT;}
-"until"         {return UNTIL;}
-"read"          {return READ;}
-"write"         {return WRITE;}
-":="            {return ASSIGN;}
-"="             {return EQ;}
+"while"         {return WHILE;}
+"int"           {return INT;}
+"void"          {return VOID;}
+"return"        {return RETURN;}
+"="             {return ASSIGN;}
+"=="            {return EQ;}
+"!="            {return NE;}
 "<"             {return LT;}
+"<="            {return LE;}
+">"             {return GT;}
+">="            {return GE;}
 "+"             {return PLUS;}
 "-"             {return MINUS;}
 "*"             {return TIMES;}
 "/"             {return OVER;}
-"("             {return LPAREN;}
+"("             {return LPAREN;} 
 ")"             {return RPAREN;}
+"["             {return LBRACE;}
+"]"             {return RBRACE;}
+"{"             {return LCURLY;}
+"}"             {return RCURLY;}
+","             {return COMMA;}
 ";"             {return SEMI;}
 {number}        {return NUM;}
 {identifier}    {return ID;}
 {newline}       {lineno++;}
 {whitespace}    {/* skip whitespace */}
-"{"             { char c;
-                  do
+"/*"            { char c;
+                  int inner_state = 0;
+                  while(1)
                   { c = input();
                     if (c == EOF) break;
-                    if (c == '\n') lineno++;
-                  } while (c != '}');
+                    if (c == '\n') {
+                      lineno++;
+                      inner_state = 0;
+                    }
+                    else if (c == '*') {
+                      inner_state = 1;
+                    }
+                    else if (inner_state == 1 && c == '/')
+                     break;
+                    else
+                      inner_state = 0;
+                  }
                 }
 .               {return ERROR;}
 
@@ -58,7 +76,7 @@ whitespace  [ \t]+
 TokenType getToken(void)
 { static int firstTime = TRUE;
   TokenType currentToken;
-  printf("getToken called\n");
+//  printf("getToken called\n");
 	if (firstTime)
   { firstTime = FALSE;
     lineno++;

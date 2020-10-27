@@ -14,7 +14,7 @@ typedef enum
    { 
     START,DONE,
     INNUM,INID,
-    INEQ,INNE,INLT,INGT,INOVER,INAS,
+    INEQ,INNE,INLT,INGT,INOVER,
     INCOMMENT,INCOMMENT_} StateType;
 
 /* lexeme of identifier or reserved word */
@@ -109,8 +109,6 @@ TokenType getToken(void)
            state = INLT;
          else if (c == '>')
            state = INGT;
-         // else if (c == '*')
-         //   state = INAS;
          else if (c == '!')
            state = INNE;
          else if ((c == ' ') || (c == '\t') || (c == '\n'))
