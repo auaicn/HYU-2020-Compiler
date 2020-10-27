@@ -197,7 +197,6 @@ TokenType getToken(void)
    if (TraceScan) {
      fprintf(listing,"\t%d: ",lineno);
      printToken(currentToken,tokenString);
-     printf("scan.c\n");
    }
    return currentToken;
 } /* end getToken */

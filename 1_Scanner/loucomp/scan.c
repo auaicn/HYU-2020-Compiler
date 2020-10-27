@@ -106,11 +106,11 @@ TokenType getToken(void)
          else if (c == '/')
            state = INOVER; 
          else if (c == '<')
-           state = LT;
+           state = INLT;
          else if (c == '>')
-           state = GT;
-         else if (c == '*')
-           state = INAS;
+           state = INGT;
+         // else if (c == '*')
+         //   state = INAS;
          else if (c == '!')
            state = INNE;
          else if ((c == ' ') || (c == '\t') || (c == '\n'))
@@ -128,9 +128,9 @@ TokenType getToken(void)
              case '-':
                currentToken = MINUS;
                break;
-             // case '*':
-             //   currentToken = TIMES;
-             //   break;
+             case '*':
+               currentToken = TIMES;
+               break;
              case '(':
                currentToken = LPAREN;
                break;
@@ -226,7 +226,9 @@ TokenType getToken(void)
        case INGT:
          state = DONE;
          if(c == '=')
+         {
           currentToken = GE;
+         }
          else
          {
           currentToken = GT;
@@ -270,21 +272,15 @@ TokenType getToken(void)
           save = FALSE;
           if (c == '*')
             state = INCOMMENT_;
-          else if (c == '/')
+          else if (c == '/'){
+            tokenStringIndex = 0;
             state = START;
+          }
          }
-         break;
-
-       case INCOMMENT:
-         save = FALSE;
-         if (c == EOF)
-         { state = DONE;
-           currentToken = ENDFILE;
-         }
-         else if (c == '}') state = START;
          break;
 
        case DONE:
+         fprintf(listing,"DONE\n");
        default: /* should never happen */
          fprintf(listing,"Scanner Bug: state= %d\n",state);
          state = DONE;
@@ -304,7 +300,7 @@ TokenType getToken(void)
    if (TraceScan) {
      fprintf(listing,"\t%d: ",lineno);
      printToken(currentToken,tokenString);
-     printf("scan.c\n");
+     // printf("scan.c\n");
    }
    return currentToken;
 } /* end getToken */
