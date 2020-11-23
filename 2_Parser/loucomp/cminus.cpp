@@ -37,18 +37,92 @@ static TreeNode * savedTree; /* stores syntax tree for later return */
 
 %% /* Grammar for CMINUS, Rules with BNF syntax*/
 
-program : declaration-list
-declara
+program           : declaration_list
+                    { 
+                      savedTree = $1;
+                    } 
+
+declaration_list  : declaration_list declaration 
+                  | declaration
+declaration       : var_declaration 
+                  | fun_declaration
+var_declaration   : type_specifier ID SEMI
+                  | type_specifier ID LBRACE NUM RBRACE SEMI
+type_specifier    : INT 
+                  | VOID
+fun_declaration   : type_specifier ID LPAREN params RPAREN compound_stmt
+params            : param_list 
+                  | VOID
+param_list        : param_list COMMA param
+                  | param
+param             : type_specifier ID 
+                  | type_specifier ID LBRACE RBRACE SEMI
+compound_stmt     : LCURLY local_declarations statement_list RCURLY
+
+local_declarations: local_declarations var_declaration 
+                  // | empty
+
+
+
+statement_list    : statement_list statement 
+                  // | empty
+statement         : expression_stmt 
+                  | compound_stmt 
+                  | selection_stmt 
+                  | iteration_stmt 
+                  | return_stmt
+expression_stmt   : expression SEMI
+                  | SEMI
+selection_stmt    : IF LPAREN expression RPAREN statement
+                  | IF LPAREN expression RPAREN statement ELSE statement
+iteration_stmt    : WHILE LPAREN expression RPAREN statement
+return_stmt       : RETURN SEMI
+                  | RETURN expression SEMI
+expression        : var ASSIGN expression
+                  | simple_expression
+var               : ID
+                  | ID LBRACE expression RBRACE
+simple_expression : additive_expression relop additive_expression
+                  | additive_expression
+relop             : LT
+                  | LE
+                  | GT
+                  | GE
+                  | EQ
+                  | NE
+
+
+
+
+additive_expression   : additive_expression addop term
+                      | term  
+addop             : PLUS
+                  | MINUS
+term              : term mulop factor 
+                  | factor
+mulop             : TIMES
+                  | OVER
+factor            : LPAREN expression RPAREN
+                  | var
+                  | call
+                  | NUM
+call              : ID LPAREN args RPAREN
+args              : arg_list
+                  // | empty
+arg_list          : arg_list COMMA expression
+                  | expression
+
+
+/*
 
 program     : stmt_seq
-                 { savedTree = $1;} 
             ;
 stmt_seq    : stmt_seq SEMI stmt
                  { YYSTYPE t = $1;
                    if (t != NULL)
-                   { while (t->sibling != NULL)
-                        t = t->sibling;
-                     t->sibling = $3;
+                   { while (t_>sibling != NULL)
+                        t = t_>sibling;
+                     t_>sibling = $3;
                      $$ = $1; }
                      else $$ = $3;
                  }
@@ -62,6 +136,7 @@ stmt        : if_stmt { $$ = $1; }
             | error  { $$ = NULL; }
             ;
 
+// all tokens, symbols 
 if_stmt     : IF exp THEN stmt_seq END
                  { $$ = newStmtNode(IfK);
                    $$->child[0] = $2;
@@ -154,6 +229,8 @@ factor      : LPAREN exp RPAREN
                  }
             | error { $$ = NULL; }
             ;
+
+*/
 
 /*
 do not add anything under here.

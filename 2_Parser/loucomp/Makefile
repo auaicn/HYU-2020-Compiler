@@ -1,14 +1,26 @@
-# NOTE: ./lex/tiny.l --> cminus.l
+# project 1
+# ./lex/tiny.l --> cminus.l
+
+# project 2
+# ./yacc/tiny.y --> ./cminus.y
+# ./yacc/globals.h --> ./globals.h 
+
+# Above files overwritten
 
 CC = gcc
 CFLAGS = 
 
-OBJS = main.o util.o scan.o parse.o symtab.o analyze.o code.o cgen.o
+OBJS = 		main.o util.o scan.o parse.o symtab.o analyze.o code.o cgen.o
 OBJS_FLEX = main.o util.o lex.yy.o parse.o symtab.o analyze.o code.o cgen.o
+OBJS_YACC = main.o util.o lex.yy.o y.tab.o symtab.o analyze.o code.o cgen.o
 
 .PHONY: all scanner_cimpl scanner_flex $(OBJS) $(OBJS_FLEX) lex.yy.c
 
-all: scanner_cimpl scanner_flex
+# all: scanner_cimpl scanner_flex cminus
+all: scanner_flex cminus # cimpl not used in project 2
+
+cminus: $(OBJS_YACC)
+	$(CC) $(CFLAGS) $(OBJS_YACC) -o $@
 
 scanner_cimpl: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
@@ -19,6 +31,11 @@ scanner_flex: $(OBJS_FLEX)
 lex.yy.o: cminus.l
 	flex $^
 	$(CC) $(CFLAGS) -c lex.yy.c -lfl
+
+y.tab.o: cminus.y
+# 	yacc $^
+	yacc -d $^
+	$(CC) $(CFLAGS) -c y.tab.c -lfl
 
 main.o: main.c globals.h util.h scan.h parse.h analyze.h cgen.h
 	$(CC) $(CFLAGS) -c main.c
