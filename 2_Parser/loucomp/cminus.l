@@ -1,10 +1,11 @@
 /****************************************************/
-/* File: tiny.l                                     */
+/* File: cminus.l                                   */
 /* Lex specification for TINY                       */
 /* Compiler Construction: Principles and Practice   */
 /* Kenneth C. Louden                                */
 /****************************************************/
 
+%option noyywrap
 %{
 #include "globals.h"
 #include "util.h"

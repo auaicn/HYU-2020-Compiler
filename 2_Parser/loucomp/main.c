@@ -7,16 +7,20 @@
 
 #include "globals.h"
 
+// It's for project 2 parser
+// So, set scanner-only false and parser-only flag to be true
+
 /* set NO_PARSE to TRUE to get a scanner-only compiler */
-// #define NO_PARSE FALSE
-#define NO_PARSE (TRUE)
+#define NO_PARSE (FALSE)
 
 /* set NO_ANALYZE to TRUE to get a parser-only compiler */
-#define NO_ANALYZE FALSE
+#define NO_ANALYZE (TRUE)
 
 /* set NO_CODE to TRUE to get a compiler that does not
  * generate code
  */
+
+// we need code!
 #define NO_CODE FALSE
 
 #include "util.h"
@@ -40,19 +44,18 @@ FILE * code;
 
 /* allocate and set tracing flags */
 
-// int EchoSource = FALSE;
-// int TraceScan = FALSE;
+// To print only Syntax Tree
 
-int EchoSource = TRUE;
-int TraceScan = TRUE;
-
-int TraceParse = FALSE;
+int EchoSource = FALSE;
+int TraceScan = FALSE;
+int TraceParse = TRUE;
 int TraceAnalyze = FALSE;
 int TraceCode = FALSE;
 
 int Error = FALSE;
 
-main( int argc, char * argv[] )
+int main( int argc, char * argv[] )
+// main( int argc, char * argv[] )
 { TreeNode * syntaxTree;
   char pgm[120]; /* source code file name */
 

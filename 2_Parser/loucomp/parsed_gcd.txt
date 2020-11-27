@@ -1,0 +1,6 @@
+
+C-MINUS COMPILATION: gcd.txt
+
+>>> Syntax error at line 4: Code ends before file
+
+Syntax tree:

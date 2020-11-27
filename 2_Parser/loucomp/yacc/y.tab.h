@@ -46,64 +46,50 @@ extern int yydebug;
   enum yytokentype
   {
     IF = 258,
-    ELSE = 259,
-    WHILE = 260,
-    INT = 261,
-    VOID = 262,
-    RETURN = 263,
-    ID = 264,
-    NUM = 265,
-    PLUS = 266,
-    MINUS = 267,
-    TIMES = 268,
-    OVER = 269,
-    EQ = 270,
-    NE = 271,
-    LT = 272,
-    LE = 273,
-    GT = 274,
-    GE = 275,
-    LPAREN = 276,
-    RPAREN = 277,
-    LBRACE = 278,
-    RBRACE = 279,
-    LCURLY = 280,
-    RCURLY = 281,
-    ASSIGN = 282,
-    SEMI = 283,
-    COMMA = 284,
-    ERROR = 285
+    THEN = 259,
+    ELSE = 260,
+    END = 261,
+    REPEAT = 262,
+    UNTIL = 263,
+    READ = 264,
+    WRITE = 265,
+    ID = 266,
+    NUM = 267,
+    ASSIGN = 268,
+    EQ = 269,
+    LT = 270,
+    PLUS = 271,
+    MINUS = 272,
+    TIMES = 273,
+    OVER = 274,
+    LPAREN = 275,
+    RPAREN = 276,
+    SEMI = 277,
+    ERROR = 278
   };
 #endif
 /* Tokens.  */
 #define IF 258
-#define ELSE 259
-#define WHILE 260
-#define INT 261
-#define VOID 262
-#define RETURN 263
-#define ID 264
-#define NUM 265
-#define PLUS 266
-#define MINUS 267
-#define TIMES 268
-#define OVER 269
-#define EQ 270
-#define NE 271
-#define LT 272
-#define LE 273
-#define GT 274
-#define GE 275
-#define LPAREN 276
-#define RPAREN 277
-#define LBRACE 278
-#define RBRACE 279
-#define LCURLY 280
-#define RCURLY 281
-#define ASSIGN 282
-#define SEMI 283
-#define COMMA 284
-#define ERROR 285
+#define THEN 259
+#define ELSE 260
+#define END 261
+#define REPEAT 262
+#define UNTIL 263
+#define READ 264
+#define WRITE 265
+#define ID 266
+#define NUM 267
+#define ASSIGN 268
+#define EQ 269
+#define LT 270
+#define PLUS 271
+#define MINUS 272
+#define TIMES 273
+#define OVER 274
+#define LPAREN 275
+#define RPAREN 276
+#define SEMI 277
+#define ERROR 278
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
