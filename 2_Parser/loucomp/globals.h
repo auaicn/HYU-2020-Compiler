@@ -62,26 +62,51 @@ extern int lineno; /* source line number for listing */
 /***********   Syntax tree for parsing ************/
 /**************************************************/
 
+// Tree Node Kind : Statement or Expression
+// 이 모든 타입들은, 타입을 나눠줘야하는지는, 구현하면서 필요에따라서 해야할듯?
 typedef enum {StmtK,ExpK} NodeKind;
-typedef enum {IfK,RepeatK,AssignK,ReadK,WriteK} StmtKind;
-typedef enum {OpK,ConstK,IdK} ExpKind;
 
-/* ExpType is used for type checking */
-typedef enum {Void,Integer,Boolean} ExpType;
+// undefined 는 알아서 쳐내준다. error state 로, syntax error 보낸다.
+// Statement Node Kind
+// IF statement Kotlin 처럼 IF 문이 expression 인게 아님.
+// ELSE statement
+// Compound Statement 등등등
+
+typedef enum {IfK,ElseK,WhileK,ReturnK} StmtKind;
+typedef enum {OpK,ConstK,IdK,paramK,VarDeclareK} ExpKind;
+
+/* ExpType is used for type checking 
+ 그러면 지금은 필요없는 거 아닌가? semantic 에서 사용된다는 이야기 같은데
+ 아무튼 boolean 은 뺴주자 일
+ 음.. 다시 생각해보니 쓰일지*/
+typedef enum {Void,Integer} ExpType;
 
 #define MAXCHILDREN 3
 
-typedef struct treeNode
-   { struct treeNode * child[MAXCHILDREN];
-     struct treeNode * sibling;
-     int lineno;
-     NodeKind nodekind;
-     union { StmtKind stmt; ExpKind exp;} kind;
-     union { TokenType op;
-             int val;
-             char * name; } attr;
-     ExpType type; /* for type checking of exps */
-   } TreeNode;
+typedef struct treeNode{
+
+    struct treeNode * child[MAXCHILDREN];
+    struct treeNode * sibling;
+    int lineno;
+
+     //yacc sets automatically these two when calling newexpnide(??k)
+    NodeKind nodekind;
+    union { 
+        StmtKind stmt; 
+        ExpKind exp;
+    } kind;
+
+    union { 
+        TokenType op;
+        int val;
+        char * name; 
+    } attr;
+
+    // If This node has value (is expression)
+    // expression 의 타입을 저장함.
+    ExpType type; /* for type checking of exps */
+
+} TreeNode;
 
 /**************************************************/
 /***********   Flags for tracing       ************/
