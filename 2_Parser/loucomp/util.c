@@ -134,6 +134,7 @@ TreeNode * newExpNode(ExpKind kind)
     t->nodekind = Exp;
     t->kind.exp = kind;
     t->lineno = lineno;
+    t->Dtype = Var;
     t->type = Void;
   }
   return t;
@@ -201,10 +202,10 @@ void printTree( TreeNode * tree )
           fprintf(listing,"While (condition) (body)\n");
           break;
         case ReturnS:
-          fprintf(listing,"Return : \n");
+          fprintf(listing,"Return\n");
           break;
         case CompoundS:
-          fprintf(listing,"Compound statement : \n");
+          fprintf(listing,"Compound statement\n");
           break;
         case DeclareS:
           switch (tree -> Dtype){
@@ -231,13 +232,16 @@ void printTree( TreeNode * tree )
     else if (tree->nodekind == Exp)
     { switch (tree->kind.exp) {
         case CallE:
-          fprintf(listing,"Func Call, name : %s, with arguments below\n", tree->attr.name);
+          fprintf(listing,"Func call named \"%s\"", tree->attr.name);
+          if(tree->child[0])
+            fprintf(listing,", with arguments below");
+          fprintf(listing, "\n");
           break;
         case OpE:
           if(tree->attr.op == ASSIGN)
             fprintf(listing,"Assign : (destination) (source)\n");
           else{
-            fprintf(listing,"Op : ");
+            fprintf(listing,"Operator : ");
             printToken(tree->attr.op,"\0");
           }
           break;
@@ -248,7 +252,19 @@ void printTree( TreeNode * tree )
             fprintf(listing,"Const : %d\n",tree->attr.val); 
           break;
         case IdE:
-          fprintf(listing,"Id : %s\n",tree->attr.name);
+          switch (tree -> Dtype){
+          //typedef enum {Var,Array,Func} DecType;
+            case Var:
+              fprintf(listing,"Var named \"%s\"\n",tree->attr.name);
+              break;
+            case Array:
+              fprintf(listing,"Value in Array named \"%s\" with index below\n",tree->attr.name);
+              break; 
+            default:
+              fprintf(listing,"Var Or Array?\n");
+              break;
+          }
+          // fprintf(listing,"Id : %s\n",tree->attr.name);
           break;
         case ParamE:
           fprintf(listing,"Single parameter, name : %s, type : %s\n", tree->attr.name, type_conv(tree->type));

@@ -80,7 +80,6 @@ whitespace  [ \t]+
 TokenType getToken(void)
 { static int firstTime = TRUE;
   TokenType currentToken;
-//  printf("getToken called\n");
 	if (firstTime)
   { firstTime = FALSE;
     lineno++;
@@ -93,7 +92,6 @@ TokenType getToken(void)
     fprintf(listing,"\t%d: ",lineno);
     printToken(currentToken,tokenString);
   }
-  ; printf("%s\n",tokenString);
   return currentToken;
 }
 

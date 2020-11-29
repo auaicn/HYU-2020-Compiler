@@ -22,7 +22,7 @@ static int yylex();
 static int yyerror(char * message);
 
 %}
-
+%expect 1
 %token IF ELSE WHILE INT VOID RETURN
 %token ID NUM
 %token PLUS MINUS TIMES OVER
@@ -57,31 +57,48 @@ declaration       : var_declaration
                   ;
 var_declaration   : type_specifier identifier SEMI
                         {
+                          // recycle type_specifier Node
                           $$ = $1;
 
-                          $$ -> nodekind = Stmt; // type need not to be treated
-                          $$ -> kind.stmt = DeclareS;
-                          $$ -> Dtype = Array;
+                          // Expression to Statement
+                          $$ -> nodekind = Stmt; 
 
+                          // Set Statement Type
+                          $$ -> kind.stmt = DeclareS;
+
+                          // Set Declare Type
+                          $$ -> Dtype = Var;
+
+                          // cpy name from identifier Node
                           $$ -> attr.name = $2 -> attr.name;
-                          $$ = $1; // type need not to be treated
+
                         }
-                  | type_specifier identifier LBRACE NUM RBRACE SEMI
+                  | type_specifier identifier LBRACE constint RBRACE SEMI
                         {
-                          printf("array creadted\n");
+                          // recycle type_specifier Node
                           $$ = $1;
 
-                          $$ -> nodekind = Stmt; // type need not to be treated
+                          // Expression to Statement
+                          $$ -> nodekind = Stmt; 
+
+                          // Set Statement Type
                           $$ -> kind.stmt = DeclareS;
+
+                          // Set Declare Type
                           $$ -> Dtype = Array;
 
+                          // cpy name from identifier Node
                           $$ -> attr.name = $2 -> attr.name;
 
-                          // number of element
+                          // Set Number of Elements
+                          // $$ -> child[0] = $4;
                           $$ -> child[0] = newExpNode(ConstE);
+                          $$ -> child[0] -> type = Integer;
                           $$ -> child[0] -> attr.val = atoi(numString);
                         }
                   ;
+
+
 type_specifier    : INT 
                         {
                           $$ = newExpNode(TypeE);
@@ -109,7 +126,6 @@ params            : param_list
                         { $$ = $1; }
                   | VOID
                         { 
-                          printf("empty paramaters\n");
                           // it has entry
                           $$ = newExpNode(ParamE);
                           $$ -> type = Void;
@@ -179,7 +195,6 @@ local_declarations: local_declarations var_declaration
                         } 
                   |
                         { 
-                          // nothing to reference. set local_declarations to be NULL explicitly
                           $$ = NULL; 
                         }
                   ;
@@ -230,6 +245,7 @@ selection_stmt    : IF LPAREN expression RPAREN statement
                           $$->child[2] = $7;
                         }
                   ;
+
 iteration_stmt    : WHILE LPAREN expression RPAREN statement
                         { 
                           $$ = newStmtNode(WhileS);
@@ -239,12 +255,12 @@ iteration_stmt    : WHILE LPAREN expression RPAREN statement
                   ;
 return_stmt       : RETURN SEMI
                       {
+                        // not important
                         $$ = newStmtNode(ReturnS); 
                         $$ -> type = Void;
                       }
                   | RETURN expression SEMI
                       {
-                        printf("return with expression");
                         $$ = newStmtNode(ReturnS); 
                         $$ -> type = Integer;
                         $$ -> child[0] = $2;
@@ -263,11 +279,19 @@ expression        : var ASSIGN expression
                         }
                   ;
 var               : identifier
-                        { $$ = $1; }
+                        {
+                          // printf("var made with identifier\n");
+                          $$ = $1; }
                   | identifier LBRACE expression RBRACE
                         {
-                          $1 -> child[0] = $3;
+                          // recycle $1
                           $$ = $1;
+
+                          // set Declare type
+                          $$ -> Dtype = Array;
+
+                          // set child
+                          $$ -> child[0] = $3;
                         }
                   ;
 
@@ -278,9 +302,17 @@ identifier        : ID
                         }
                   ;
 
+constint          : NUM
+                        {
+                          // printf("constant\n");
+                          $$ = newExpNode(ConstE);
+                          $$ -> type = Integer;
+                          $$ -> attr.val = atoi(numString);
+                        }
+                  ;
+
 simple_expression : additive_expression relop additive_expression
                         { 
-                          printf("making simple_expression\n");
                           $$ = newExpNode(OpE);
                           $$->child[0] = $1;
                           $$->child[1] = $3;
@@ -288,7 +320,6 @@ simple_expression : additive_expression relop additive_expression
                         }
                   | additive_expression 
                         { 
-                          printf("simple_expression\n");
                           $$ = $1;
                         }
                   ;
@@ -356,9 +387,7 @@ term              : term mulop factor
                           $$ -> child[1] = $3;
                         }
                   | factor
-                        {
-                          $$ = $1;
-                        }
+                        { $$ = $1; }
                   ;
 mulop             : TIMES
                         { 
@@ -372,31 +401,24 @@ mulop             : TIMES
                         }
                   ;
 factor            : LPAREN expression RPAREN
-                        { 
-                          // send expression itself
-                          $$ = $2; 
-                        }
+                        { $$ = $2; }
                   | var
-                        { 
-                          // var has it's own Exp Node
-                          $$ = $1; 
-                        }
+                        { $$ = $1; }
                   | call
-                        { 
-                          // call has it's own Exp Node
-                          $$ = $1; }
-                  | NUM
-                        { 
-                          $$ = newExpNode(ConstE);
-                          $$ -> type = Integer;
-                          $$ -> attr.val = atoi(numString);
-                        }
+                        { $$ = $1; }
+                  | constint
+                        { $$ = $1; }
                   ;
 call              : identifier LPAREN args RPAREN
                         { 
+                          // recycle id node
                           $$ = $1;
+
+                          // set Expression Type
                           $$ -> kind.exp = CallE;
 
+                          // Even thouhg there could be no argument
+                          // Example says 
                           // there could be no argument
                           // then leave first child to have NULL value
                           if($3 != NULL)
@@ -423,7 +445,7 @@ arg_list          : arg_list COMMA expression
                         { 
                           $$ = $1; 
                         }
-
+                  ;
 %%
 
 int yyerror(char * message)

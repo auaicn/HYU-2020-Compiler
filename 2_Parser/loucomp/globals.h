@@ -88,6 +88,7 @@ typedef enum {
     IdE,
     TypeE,
     VarE,
+    VarArrayE,
     ParamE,
     CallE
 } ExpKind;
