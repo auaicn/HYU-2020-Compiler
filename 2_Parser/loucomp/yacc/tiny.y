@@ -47,24 +47,6 @@ stmt        : if_stmt { $$ = $1; }
             | write_stmt { $$ = $1; }
             | error  { $$ = NULL; }
             ;
-if_stmt     : IF exp THEN stmt_seq END
-                 { $$ = newStmtNode(IfK);
-                   $$->child[0] = $2;
-                   $$->child[1] = $4;
-                 }
-            | IF exp THEN stmt_seq ELSE stmt_seq END
-                 { $$ = newStmtNode(IfK);
-                   $$->child[0] = $2;
-                   $$->child[1] = $4;
-                   $$->child[2] = $6;
-                 }
-            ;
-repeat_stmt : REPEAT stmt_seq UNTIL exp
-                 { $$ = newStmtNode(RepeatK);
-                   $$->child[0] = $2;
-                   $$->child[1] = $4;
-                 }
-            ;
 assign_stmt : ID { savedName = copyString(tokenString);
                    savedLineNo = lineno; }
               ASSIGN exp

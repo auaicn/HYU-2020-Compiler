@@ -12,6 +12,9 @@
 #include "scan.h"
 /* lexeme of identifier or reserved word */
 char tokenString[MAXTOKENLEN+1];
+char idString[MAXTOKENLEN+1];
+char numString[MAXTOKENLEN+1];
+
 %}
 
 digit       [0-9]
@@ -48,8 +51,8 @@ whitespace  [ \t]+
 "}"             {return RCURLY;}
 ","             {return COMMA;}
 ";"             {return SEMI;}
-{number}        {return NUM;}
-{identifier}    {return ID;}
+{number}        {strncpy(numString,yytext,MAXTOKENLEN);return NUM;}
+{identifier}    {strncpy(idString,yytext,MAXTOKENLEN); return ID;}
 {newline}       {lineno++;}
 {whitespace}    {/* skip whitespace */}
 "/*"            { char c;
@@ -90,6 +93,7 @@ TokenType getToken(void)
     fprintf(listing,"\t%d: ",lineno);
     printToken(currentToken,tokenString);
   }
+  ; printf("%s\n",tokenString);
   return currentToken;
 }
 

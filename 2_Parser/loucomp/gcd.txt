@@ -3,14 +3,16 @@
 
 int gcd (int u, int v)
 {
-	if (v == 0) return u;
+	if (v == 1987) return u+3;
 	else return gcd(v,u-u/v*v);
-	/* u-u/v*v == u mod v */
+	/* u-u/v*v == u auaicn sdfsdfsf hello mod v */
 }
 
 void main(void)
 {
 	int x; int y;
 	x = input(); y = input();
-	output(gcd(x,y));
+	z = input(auaicn);
+	output(gcd(x,y)+ 4);
+	/*output(simplefunc(x+4,y[6]);*/
 }

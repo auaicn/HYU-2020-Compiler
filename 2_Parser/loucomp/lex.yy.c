@@ -490,8 +490,11 @@ char *yytext;
 #include "scan.h"
 /* lexeme of identifier or reserved word */
 char tokenString[MAXTOKENLEN+1];
-#line 494 "lex.yy.c"
-#line 495 "lex.yy.c"
+char idString[MAXTOKENLEN+1];
+char numString[MAXTOKENLEN+1];
+
+#line 497 "lex.yy.c"
+#line 498 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -708,10 +711,10 @@ YY_DECL
 		}
 
 	{
-#line 24 "cminus.l"
+#line 27 "cminus.l"
 
 
-#line 715 "lex.yy.c"
+#line 718 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -770,153 +773,153 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 26 "cminus.l"
+#line 29 "cminus.l"
 {return IF;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 27 "cminus.l"
+#line 30 "cminus.l"
 {return ELSE;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 28 "cminus.l"
+#line 31 "cminus.l"
 {return WHILE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 29 "cminus.l"
+#line 32 "cminus.l"
 {return INT;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 30 "cminus.l"
+#line 33 "cminus.l"
 {return VOID;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 31 "cminus.l"
+#line 34 "cminus.l"
 {return RETURN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 32 "cminus.l"
+#line 35 "cminus.l"
 {return ASSIGN;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 33 "cminus.l"
+#line 36 "cminus.l"
 {return EQ;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 34 "cminus.l"
+#line 37 "cminus.l"
 {return NE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 35 "cminus.l"
+#line 38 "cminus.l"
 {return LT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 36 "cminus.l"
+#line 39 "cminus.l"
 {return LE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 37 "cminus.l"
+#line 40 "cminus.l"
 {return GT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 38 "cminus.l"
+#line 41 "cminus.l"
 {return GE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 39 "cminus.l"
+#line 42 "cminus.l"
 {return PLUS;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 40 "cminus.l"
+#line 43 "cminus.l"
 {return MINUS;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 41 "cminus.l"
+#line 44 "cminus.l"
 {return TIMES;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 42 "cminus.l"
+#line 45 "cminus.l"
 {return OVER;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 43 "cminus.l"
+#line 46 "cminus.l"
 {return LPAREN;} 
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 44 "cminus.l"
+#line 47 "cminus.l"
 {return RPAREN;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 45 "cminus.l"
+#line 48 "cminus.l"
 {return LBRACE;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 46 "cminus.l"
+#line 49 "cminus.l"
 {return RBRACE;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 47 "cminus.l"
+#line 50 "cminus.l"
 {return LCURLY;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 48 "cminus.l"
+#line 51 "cminus.l"
 {return RCURLY;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 49 "cminus.l"
+#line 52 "cminus.l"
 {return COMMA;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 50 "cminus.l"
+#line 53 "cminus.l"
 {return SEMI;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 51 "cminus.l"
-{return NUM;}
+#line 54 "cminus.l"
+{strncpy(numString,yytext,MAXTOKENLEN);return NUM;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 52 "cminus.l"
-{return ID;}
+#line 55 "cminus.l"
+{strncpy(idString,yytext,MAXTOKENLEN); return ID;}
 	YY_BREAK
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 53 "cminus.l"
+#line 56 "cminus.l"
 {lineno++;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 54 "cminus.l"
+#line 57 "cminus.l"
 {/* skip whitespace */}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 55 "cminus.l"
+#line 58 "cminus.l"
 { char c;
                   int inner_state = 0;
                   while(1)
@@ -938,15 +941,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 73 "cminus.l"
+#line 76 "cminus.l"
 {return ERROR;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 75 "cminus.l"
+#line 78 "cminus.l"
 ECHO;
 	YY_BREAK
-#line 950 "lex.yy.c"
+#line 953 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1951,7 +1954,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 75 "cminus.l"
+#line 78 "cminus.l"
 
 
 TokenType getToken(void)
@@ -1970,6 +1973,7 @@ TokenType getToken(void)
     fprintf(listing,"\t%d: ",lineno);
     printToken(currentToken,tokenString);
   }
+  ; printf("%s\n",tokenString);
   return currentToken;
 }
 
