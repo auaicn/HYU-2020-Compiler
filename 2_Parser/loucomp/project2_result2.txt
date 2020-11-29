@@ -1,0 +1,70 @@
+
+C-MINUS COMPILATION: test.2.txt
+
+Syntax tree:
+  Function declaration, name : main, return type : Void
+    Single parameter, name : (null), type : Void
+    Compound statement
+      Var declaration, name : i, Type : Integer
+      Array declaration, name : x, Element Type : Integer number of elements below
+        Const : 5
+      Assign : (destination) (source)
+        Var named "a"
+        Assign : (destination) (source)
+          Var named "b"
+          Const : 3
+      Assign : (destination) (source)
+        Var named "c"
+        Assign : (destination) (source)
+          Var named "d"
+          Assign : (destination) (source)
+            Var named "e"
+            Var named "f"
+      If (condition) (body)
+        Operator : <
+          Var named "a"
+          Const : 0
+        If (condition) (body) (else)
+          Operator : <
+            Var named "b"
+            Const : 0
+          Assign : (destination) (source)
+            Var named "a"
+            Const : 3
+          Assign : (destination) (source)
+            Var named "left"
+            Const : 3
+      Assign : (destination) (source)
+        Var named "i"
+        Const : 0
+      While (condition) (body)
+        Operator : <
+          Var named "i"
+          Const : 5
+        Compound statement
+          Assign : (destination) (source)
+            Value in Array named "x" with index below
+              Var named "i"
+            Func call named "input"
+          Assign : (destination) (source)
+            Var named "i"
+            Operator : +
+              Var named "i"
+              Const : 1
+      Assign : (destination) (source)
+        Var named "i"
+        Const : 0
+      While (condition) (body)
+        Operator : <=
+          Var named "i"
+          Const : 4
+        Compound statement
+          If (condition) (body)
+            Operator : !=
+              Value in Array named "x" with index below
+                Var named "i"
+              Const : 0
+            Compound statement
+              Func call named "output", with arguments below
+                Value in Array named "x" with index below
+                  Var named "i"

@@ -62,15 +62,7 @@ extern int lineno; /* source line number for listing */
 /***********   Syntax tree for parsing ************/
 /**************************************************/
 
-// Tree Node Kind : Statement or Expression
-// 이 모든 타입들은, 타입을 나눠줘야하는지는, 구현하면서 필요에따라서 해야할듯?
 typedef enum {Stmt,Exp} NodeKind;
-
-// undefined 는 알아서 쳐내준다. error state 로, syntax error 보낸다.
-// Statement Node Kind
-// IF statement Kotlin 처럼 IF 문이 expression 인게 아님.
-// ELSE statement
-// Compound Statement 등등등
 
 typedef enum {
     IfS,

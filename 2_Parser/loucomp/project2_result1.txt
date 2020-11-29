@@ -1,0 +1,39 @@
+
+C-MINUS COMPILATION: test.1.txt
+
+Syntax tree:
+  Function declaration, name : gcd, return type : Integer
+    Single parameter, name : u, type : Integer
+    Single parameter, name : v, type : Integer
+    Compound statement
+      If (condition) (body) (else)
+        Operator : ==
+          Var named "v"
+          Const : 0
+        Return
+          Var named "u"
+        Return
+          Func call named "gcd", with arguments below
+            Var named "v"
+            Operator : -
+              Var named "u"
+              Operator : *
+                Operator : /
+                  Var named "u"
+                  Var named "v"
+                Var named "v"
+  Function declaration, name : main, return type : Void
+    Single parameter, name : (null), type : Void
+    Compound statement
+      Var declaration, name : x, Type : Integer
+      Var declaration, name : y, Type : Integer
+      Assign : (destination) (source)
+        Var named "x"
+        Func call named "input"
+      Assign : (destination) (source)
+        Var named "y"
+        Func call named "input"
+      Func call named "output", with arguments below
+        Func call named "gcd", with arguments below
+          Var named "x"
+          Var named "y"
